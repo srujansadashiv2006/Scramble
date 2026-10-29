@@ -1,0 +1,489 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+/* ------------------------------------------------------------------
+   Design system — "Linear Algebra Lab" notebook
+   Palette:
+     paper   #FBFAF7   background
+     grid    #E7E4DA   faint graph lines
+     ink     #1B2233   primary text (deep blue-black)
+     slate   #5A6478   secondary text
+     violet  #6C4CE0   signature accent (transformation)
+     amber   #E8A33D   encrypted / warning highlight
+     green   #2FA36B   recovered / success
+   ------------------------------------------------------------------ */
+:root {
+  color-scheme: light;
+  --paper: #fbfaf7;
+  --grid: #e7e4da;
+  --ink: #1b2233;
+  --slate: #5a6478;
+  --violet: #6c4ce0;
+  --violet-soft: #efeaff;
+  --amber: #e8a33d;
+  --green: #2fa36b;
+  --red: #d0473f;
+  --card: #ffffff;
+  --radius: 4px;
+  --shadow: 0 1px 0 var(--grid), 0 10px 30px -18px rgba(27, 34, 51, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  color: var(--ink);
+  background-color: var(--paper);
+  /* graph-paper grid */
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 26px 26px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ---------------------------- header ---------------------------- */
+.masthead {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 18px;
+  margin-bottom: 34px;
+}
+.eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin: 0 0 8px;
+}
+.masthead h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 5vw, 46px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.masthead h1 em {
+  font-style: normal;
+  color: var(--violet);
+}
+.masthead p {
+  color: var(--slate);
+  max-width: 60ch;
+  margin: 12px 0 0;
+  font-size: 15px;
+}
+
+/* ---------------------------- layout ---------------------------- */
+.grid-main {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .grid-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--grid);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+.panel + .panel {
+  margin-top: 24px;
+}
+.panel h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel h2 .tag {
+  font-family: "JetBrains Mono", monospace;
+  color: var(--violet);
+  font-size: 12px;
+}
+
+/* ---------------------------- controls ---------------------------- */
+label.field {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 7px;
+  color: var(--ink);
+}
+
+.dropzone {
+  border: 1.5px dashed #c8c3b4;
+  border-radius: var(--radius);
+  padding: 22px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  color: var(--slate);
+  font-size: 13px;
+}
+.dropzone:hover,
+.dropzone.drag {
+  border-color: var(--violet);
+  background: var(--violet-soft);
+  color: var(--ink);
+}
+.dropzone strong {
+  color: var(--violet);
+}
+.dropzone input {
+  display: none;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.seg {
+  display: inline-flex;
+  border: 1px solid var(--grid);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.seg button {
+  border: none;
+  background: var(--card);
+  padding: 8px 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--slate);
+}
+.seg button.active {
+  background: var(--ink);
+  color: #fff;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+  user-select: none;
+}
+.check input {
+  accent-color: var(--violet);
+  width: 16px;
+  height: 16px;
+}
+
+/* ---------------------------- matrix input ---------------------------- */
+.matrix-input {
+  display: inline-grid;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 12px 16px;
+  position: relative;
+}
+/* bracket flourish — the signature element */
+.matrix-input::before,
+.matrix-input::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 9px;
+  border: 2px solid var(--ink);
+}
+.matrix-input::before {
+  left: 0;
+  border-right: none;
+}
+.matrix-input::after {
+  right: 0;
+  border-left: none;
+}
+.matrix-input input {
+  width: 52px;
+  height: 44px;
+  text-align: center;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 16px;
+  font-weight: 500;
+  border: 1px solid var(--grid);
+  border-radius: var(--radius);
+  color: var(--ink);
+  background: #fdfdfb;
+}
+.matrix-input input:focus {
+  outline: 2px solid var(--violet);
+  border-color: var(--violet);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+.btn {
+  flex: 1;
+  border: none;
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.05s, filter 0.15s;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-encrypt {
+  background: var(--violet);
+  color: #fff;
+}
+.btn-decrypt {
+  background: var(--ink);
+  color: #fff;
+}
+.btn:not(:disabled):hover {
+  filter: brightness(1.08);
+}
+
+/* ---------------------------- canvas / images ---------------------------- */
+.canvas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 620px) {
+  .canvas-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.frame {
+  border: 1px solid var(--grid);
+  border-radius: var(--radius);
+  background: #fdfdfb;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.frame .cap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--grid);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.frame .cap .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 7px;
+}
+.dot.o { background: var(--slate); }
+.dot.e { background: var(--amber); }
+.dot.d { background: var(--green); }
+
+.frame .imgbox {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    repeating-conic-gradient(#f0eee7 0% 25%, #fbfaf7 0% 50%) 50% / 18px 18px;
+}
+.frame .imgbox img {
+  max-width: 100%;
+  max-height: 100%;
+  image-rendering: pixelated;
+  display: block;
+}
+.frame .imgbox .placeholder {
+  color: #b7b2a4;
+  font-size: 12px;
+  font-family: "JetBrains Mono", monospace;
+  padding: 20px;
+  text-align: center;
+}
+.frame a.dl {
+  font-size: 11px;
+  color: var(--violet);
+  text-decoration: none;
+  font-family: "JetBrains Mono", monospace;
+}
+.frame a.dl:hover { text-decoration: underline; }
+
+/* ---------------------------- explainer / math ---------------------------- */
+.math-strip {
+  font-family: "JetBrains Mono", monospace;
+  background: var(--ink);
+  color: #eef;
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  font-size: 15px;
+  line-height: 1.9;
+  overflow-x: auto;
+}
+.math-strip .k { color: #b9a7ff; }
+.math-strip .mod { color: var(--amber); }
+.math-strip .lbl {
+  color: #8b93a7;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 4px;
+}
+.math-strip .line + .line { margin-top: 14px; }
+
+.stat-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.stat {
+  flex: 1;
+  min-width: 130px;
+  border: 1px solid var(--grid);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+.stat .lbl {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--slate);
+}
+.stat .val {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 2px;
+}
+.stat.ok .val { color: var(--green); }
+.stat.bad .val { color: var(--red); }
+
+/* small rendered matrix (read-only, for inverse display) */
+.matrix-show {
+  display: inline-grid;
+  gap: 4px 10px;
+  padding: 8px 14px;
+  position: relative;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+}
+.matrix-show::before,
+.matrix-show::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: 7px;
+  border: 2px solid var(--slate);
+}
+.matrix-show::before { left: 0; border-right: none; }
+.matrix-show::after { right: 0; border-left: none; }
+.matrix-show span {
+  text-align: right;
+  min-width: 30px;
+  color: var(--ink);
+}
+
+/* ---------------------------- toast ---------------------------- */
+.toast-wrap {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 50;
+}
+.toast {
+  background: var(--ink);
+  color: #fff;
+  padding: 13px 16px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  max-width: 320px;
+  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.5);
+  border-left: 3px solid var(--violet);
+  animation: slideIn 0.2s ease;
+}
+.toast.error { border-left-color: var(--red); }
+.toast.success { border-left-color: var(--green); }
+@keyframes slideIn {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* spinner */
+.spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+  vertical-align: -2px;
+  margin-right: 7px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--slate);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+.hint code {
+  font-family: "JetBrains Mono", monospace;
+  background: var(--violet-soft);
+  color: var(--violet);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
